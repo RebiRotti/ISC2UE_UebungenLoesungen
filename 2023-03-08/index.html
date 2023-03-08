@@ -1,34 +1,36 @@
 <!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Erste Übung</title>
-</head>
-<body>
-    
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Übung</title>
+    </head>
+    <body>
 
-
-    <script>
-        console.log('meine erste Ausgabe');
-
-        const myFirstConst = "ich bin ein String";
+        <script src="main.js"></script>
         
-        let firstVariable = 'Mischung aus String und' + 15;
+        <script>
+            console.log('meine erste Ausgabe');
 
-        var noGoVariable = "Veraltet";
+            const firstConst = "meine erste Konstante";
+            console.log(firstConst);
 
-        console.log(myFirstConst);
-        console.log(firstVariable, noGoVariable);
+            let firstVariable = 'erste Variable ' + 20;
 
-        let myArray = [1,2,3];
-        console.log(myArray);
+            var noGo = "veraltete Methode";
 
-        function quadrat(x) {
-            let result = x * x;
-            return result;
-        }
+            console.log(firstVariable, noGo);
 
-        console.log(quadrat(5));
-    </script>
-</body>
+            let myArray = [1, 2, 3, 4];
+            console.log(myArray);
+
+            console.log('10' + 5);
+
+            function quadrat(x) {
+                let result = x * x;
+                return result;
+            }
+
+            console.log(quadrat(5));
+        </script>
+    </body>
 </html>

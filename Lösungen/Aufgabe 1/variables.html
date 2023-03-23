@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loose Typing</title>
+</head>
+<body>
+<script>
+    "use strict";
+
+    const number = 3;
+    const stringNumber = "5";
+    const string = "Text";
+    const array = ["a", "b", "c"];
+
+    const result1 = number + stringNumber;
+    const result2 = number * stringNumber;
+    const result3 = number + string;
+    const result4 = number * string;
+    const result5 = number + array;
+    const result6 = number * array;
+
+    console.log(result1 + ": " + typeof result1); // 35: string
+    console.log(result2 + ": " + typeof result2); // 15: number
+    console.log(result3 + ": " + typeof result3); // 3Text: string
+    console.log(result4 + ": " + typeof result4); // NaN: number
+    console.log(result5 + ": " + typeof result5); // 3a,b,c: string
+    console.log(result6 + ": " + typeof result6); // NaN: number
+</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Temperature Conversion Functions</title>
+</head>
+<body>
+
+<script>
+    "use strict";
+
+    function convertTemperature(temperature, fromUnit, toUnit) {
+        switch (fromUnit) {
+            case "celsius":
+                switch (toUnit) {
+                    case "celsius":
+                        return temperature;
+                    case "fahrenheit":
+                        return celsiusToFahrenheit(temperature);
+                    case "kelvin":
+                        return celsiusToKelvin(temperature);
+                    default:
+                        return "Invalid argument: " + toUnit;
+                }
+            case "fahrenheit":
+                switch (toUnit) {
+                    case "celsius":
+                        return fahrenheitToCelsius(temperature);
+                    case "fahrenheit":
+                        return temperature;
+                    case "kelvin":
+                        return fahrenheitToKelvin(temperature);
+                    default:
+                        return "Invalid argument: " + toUnit;
+                }
+            case "kelvin":
+                switch (toUnit) {
+                    case "celsius":
+                        return kelvinToCelsius(temperature);
+                    case "fahrenheit":
+                        return kelvinToFahrenheit(temperature);
+                    case "kelvin":
+                        return temperature;
+                    default:
+                        return "Invalid argument: " + toUnit;
+                }
+            default:
+                return "Invalid argument: " + fromUnit;
+        }
+    }
+
+    function celsiusToKelvin(temperature) {
+        return temperature + 273.15;
+    }
+
+    function celsiusToFahrenheit(temperature) {
+        return temperature * 1.8 + 32;
+    }
+
+    function kelvinToCelsius(temperature) {
+        return temperature - 273.15;
+    }
+
+    function kelvinToFahrenheit(temperature) {
+        return temperature * 1.8 - 459.67;
+    }
+
+    function fahrenheitToCelsius(temperature) {
+        return (temperature - 32) * 5 / 9;
+    }
+
+    function fahrenheitToKelvin(temperature) {
+        return (temperature + 459.67) * 5 / 9;
+    }
+
+    console.log(convertTemperature(35, "celsius", "fahrenheit")); // 95
+    console.log(convertTemperature(35, "celsius", "kelvin")); // 308.15
+    console.log(convertTemperature(35, "celsius", "celsius")); // 35
+    console.log(convertTemperature(35, "kelvin", "fahrenheit")); // -396.67
+    console.log(convertTemperature(35, "kelvin", "kelvin")); // 35
+    console.log(convertTemperature(35, "kelvin", "celsius")); // -238.14999999999998
+    console.log(convertTemperature(35, "fahrenheit", "fahrenheit")); // 35
+    console.log(convertTemperature(35, "fahrenheit", "kelvin")); // 274.81666666666666
+    console.log(convertTemperature(35, "fahrenheit", "celsius")); // 1.6666666666666667
+
+    console.log(convertTemperature(35, "degrees", "degrees")); // Invalid argument: degrees
+    console.log(convertTemperature(35, "celsius", "degrees")); // Invalid argument: degrees
+    console.log(convertTemperature(35, "degrees", "kelvin")); // Invalid argument: degrees
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Solway:wght@400;800&display=swap");
+
+:root {
+    --full-black: rgb(0, 0, 0);
+    --full-white: rgb(255, 255, 255);
+    --80perc-white: rgba(255, 255, 255, 0.8);
+    --full-gray: rgb(105, 105, 105);
+    --solid-bg: rgb(228, 225, 182);
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--solid-bg) url(../images/background.jpg) no-repeat fixed center;
+    background-size: cover;
+    font-family: Solway, Helvetica, Arial, sans-serif;
+    font-size: 1.5rem;
+}
+
+header {
+    background-color: var(--full-black);
+    color: var(--full-white);
+    padding: 1.25rem;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+main {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#dateBox {
+    width: auto;
+    background-color: var(--80perc-white);
+    border-radius: 5px;
+}
+
+#dateBox div {
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+}
+
+p {
+    text-align: center;
+}
+
+time {
+    font-size: 2.25rem;
+    font-weight: 800;
+}
+
+a:link, a:visited {
+    color: var(--full-gray);
+}
+
+a:hover, a:active {
+    color: var(--full-black);
+}

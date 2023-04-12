@@ -21,7 +21,7 @@ const generateMovieHtml = movie => `
 
 // Funktion zum Anzeigen von Filmen auf der Seite
 function displayMovies(movies) {
-    // Verwenden Sie Array.map, um die HTML-Ausgabe zu generieren
+    // Verwenden Sie Array.map anstelle einer forEach-Schleife, um die HTML-Ausgabe zu generieren
     const movieHtml = movies.map(generateMovieHtml).join('');
     document.getElementById('movies').innerHTML = movieHtml;
 }
@@ -29,19 +29,21 @@ function displayMovies(movies) {
 // Funktion zum Anzeigen der Seitennavigation
 function displayPagination(page, totalPages, searchTerm) {
     document.querySelector('.pagination').innerHTML = `
-    <li class="page-item"><a class="page-link" onclick="getMovies('${searchTerm}', ${page-1 || 1})">Previous</a></li>
+    <li class="page-item"><a class="page-link" onclick="getMovies('${searchTerm}', ${page - 1 || 1})">Previous</a></li>
     <li class="page-item"><a class="page-link" aria-disabled="true">Total: ${totalPages}</a></li>
-    <li class="page-item"><a class="page-link" onclick="getMovies('${searchTerm}', ${page+1})">Next</a></li>
+    <li class="page-item"><a class="page-link"  onclick="getMovies('${searchTerm}', ${page + 1})">Next</a></li>
   `;
 }
 
 // Event-Listener für die Suchanfrage
 document.getElementById('search-form').addEventListener('submit', event => {
+    // Verhindern Sie das Standardverhalten des Submit-Events
     event.preventDefault();
+    // Holen Sie den Suchbegriff aus dem Suchfeld
     const searchTerm = document.getElementById('search').value;
+    // Rufen Sie die Funktion auf, um die Filmliste abzurufen
     getMovies(searchTerm, 1);
 });
-
 
 // Funktion zum Abrufen der Filmliste von der API
 function getMovies(searchTerm, page) {
@@ -49,8 +51,8 @@ function getMovies(searchTerm, page) {
     fetch(url)
         .then(response => response.json())
         .then(({Search: movies = [], totalResults = 0}) => {
-            const totalPages =  Math.ceil(totalResults / 10);
-            console.log(movies);
+            // Berechnen Sie die Gesamtzahl der Seiten und rufen Sie die Funktionen zum Anzeigen von Filmen und der Seitennavigation auf
+            const totalPages = Math.ceil(totalResults / 10);
             displayMovies(movies);
             displayPagination(page, totalPages, searchTerm);
         })
@@ -59,9 +61,13 @@ function getMovies(searchTerm, page) {
 
 // Event-Listener für Details-Links
 document.getElementById('movies').addEventListener('click', event => {
-    if(event.target.matches('.details-link')) {
+    // Überprüfen, ob der Klick auf einen Details-Link war
+    if (event.target.matches('.details-link')) {
+        // Verhindert das Standardverhalten des Links, um die Seite nicht neu zu laden
         event.preventDefault();
+        // Abrufen der imdbID aus dem data-imdb-id-Attribut des angeklickten Elements
         const imdbID = event.target.getAttribute('data-imdb-id');
+        // Aufrufen der Funktion getMovieDetails mit der erhaltenen imdbID als Parameter
         getMovieDetails(imdbID);
     }
 });
@@ -72,7 +78,7 @@ function getMovieDetails(imdbID) {
         .then(response => response.json())
         .then(data => {
             console.table(data)
-            const modalHtml = `
+            const modalContainer = `
                 <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-xl">
                     <div class="modal-content">
@@ -94,52 +100,52 @@ function getMovieDetails(imdbID) {
                               <tbody>
                                 <tr>
                                   <td>Jahr</td>
-                                  <td><!--ToDo--></td>
+                                  <td>${data.Year}</td>
                                 </tr>
                                 <tr>
                                   <td>Writer</td>
-                                  <td><!--ToDo--></td>
+                                  <td>${data.Writer}</td>
                                 </tr>
                                 <tr>
                                   <td>Länge</td>
-                                  <td><!--ToDo--></td>
+                                  <td>${data.Runtime}</td>
                                 </tr>
                                 <tr>
                                   <td>Actors</td>
-                                  <td><!--ToDo--></td>
+                                  <td>${data.Actors}</td>
                                 </tr>
                                 <tr>
                                   <td>Awards</td>
-                                  <td><!--ToDo--></td>
+                                  <td>${data.Awards}</td>
                                 </tr>
                                 <tr>
                                   <td>BoxOffice</td>
-                                  <td><!--ToDo--></td>
+                                  <td>${data.BoxOffice}</td>
                                 </tr>
                                 <tr>
                                   <td>Director</td>
-                                  <td><!--ToDo--></td>
+                                  <td>${data.Director}</td>
                                 </tr>
                                 
                                   <td>Genre</td>
-                                  <td><!--ToDo--></td>
+                                  <td>${data.Genre}</td>
                                 </tr>
                                 <tr>
                                   <td>Production</td>
-                                  <td><!--ToDo--></td>
+                                  <td>${data.Production}</td>
                                 </tr>
                                 <tr>
                                   <td>Rated</td>
-                                  <td><!--ToDo--></td>
+                                  <td>${data.Rated}</td>
                                 </tr>
                               </tbody>
                             </table>
                                 <ul>
-                                  ${data.Ratings.map(rating => `<li>${rating.Source}: ${rating.Value}</li>`).join('')};
+                                  ${data.Ratings.map(rating => `<li>${rating.Source}: ${rating.Value}</li>`).join('')}
                                 </ul>
                             </div>
                         </div>
-                        <p><!--ToDo--></p>
+                        <p>${data.Plot}</p>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -149,11 +155,11 @@ function getMovieDetails(imdbID) {
                 </div>`;
 
             // Erstellen Sie ein DOM-Element aus dem Modal-HTML
-            const modalElement = document.createRange().createContextualFragment(modalHtml);
+            const modalElement = document.createRange().createContextualFragment(modalContainer);
             // Fügen Sie das Modal-Element zum Body hinzu
             document.body.appendChild(modalElement);
             // Holen Sie das Modal-Element
-            const modal = document.getElementById('movieModal')
+            const modal = document.getElementById('movieModal');
             // Zeigen Sie das Modal an
             const modalInstance = new bootstrap.Modal(modal);
             modalInstance.show();

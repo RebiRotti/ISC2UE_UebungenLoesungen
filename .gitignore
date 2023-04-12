@@ -2,3 +2,15 @@
 Lösungen/.DS_Store
 
 .DS_Store
+
+.idea/workspace.xml
+
+.idea/php.xml
+
+.idea/vcs.xml
+
+Lösungen/Aufgabe 2/.vscode/settings.json
+
+*.iml
+
+.idea/

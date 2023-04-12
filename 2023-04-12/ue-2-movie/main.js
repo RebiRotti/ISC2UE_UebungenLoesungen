@@ -4,16 +4,16 @@ const API_KEY = "59cdfcc9";
 const generateMovieHtml = movie => `
   <section class="col">
     <div class="card">
-        <img src="<!--ToDo-->" class="card-img-top">
+        <img src="${movie.Poster}" class="card-img-top">
         <div class="card-body">
-            <h5 class="card-title"><!--ToDo--></h5>
+            <h5 class="card-title">${movie.Title}</h5>
             <div class="card-text">
-                <p><!--ToDo--><br>
-                <!--ToDo--></p>
+                <p>${movie.Year}<br>
+                ${movie.Type}</p>
             </div>
         </div>
         <div class="card-footer">
-          <a class="btn btn-dark btn-sm details-link" data-imdb-id="<!--ToDo-->">weitere Details</a>
+          <a class="btn btn-dark btn-sm details-link" data-imdb-id="${movie.imdbID}">weitere Details</a>
         </div>
     </div>
   </section>
@@ -22,30 +22,48 @@ const generateMovieHtml = movie => `
 // Funktion zum Anzeigen von Filmen auf der Seite
 function displayMovies(movies) {
     // Verwenden Sie Array.map, um die HTML-Ausgabe zu generieren
-    // ToDo
+    const movieHtml = movies.map(generateMovieHtml).join('');
+    document.getElementById('movies').innerHTML = movieHtml;
 }
 
 // Funktion zum Anzeigen der Seitennavigation
 function displayPagination(page, totalPages, searchTerm) {
     document.querySelector('.pagination').innerHTML = `
-    /* ToDo */
+    <li class="page-item"><a class="page-link" onclick="getMovies('${searchTerm}', ${page-1 || 1})">Previous</a></li>
+    <li class="page-item"><a class="page-link" aria-disabled="true">Total: ${totalPages}</a></li>
+    <li class="page-item"><a class="page-link" onclick="getMovies('${searchTerm}', ${page+1})">Next</a></li>
   `;
 }
 
 // Event-Listener für die Suchanfrage
 document.getElementById('search-form').addEventListener('submit', event => {
-    /*ToDo*/
+    event.preventDefault();
+    const searchTerm = document.getElementById('search').value;
+    getMovies(searchTerm, 1);
 });
 
 
 // Funktion zum Abrufen der Filmliste von der API
 function getMovies(searchTerm, page) {
-    /* ToDo */
+    const url = `https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchTerm}&page=${page}`;
+    fetch(url)
+        .then(response => response.json())
+        .then(({Search: movies = [], totalResults = 0}) => {
+            const totalPages =  Math.ceil(totalResults / 10);
+            console.log(movies);
+            displayMovies(movies);
+            displayPagination(page, totalPages, searchTerm);
+        })
+        .catch(error => console.error(error));
 }
 
 // Event-Listener für Details-Links
 document.getElementById('movies').addEventListener('click', event => {
-    /* ToDo */
+    if(event.target.matches('.details-link')) {
+        event.preventDefault();
+        const imdbID = event.target.getAttribute('data-imdb-id');
+        getMovieDetails(imdbID);
+    }
 });
 
 function getMovieDetails(imdbID) {
@@ -59,12 +77,12 @@ function getMovieDetails(imdbID) {
                   <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel"><!--ToDo--></h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">${data.Title}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
                         <div class="row row-cols-2 g-4">
-                            <img src="<!--ToDo-->" class="img-fluid mb-3">
+                            <img src="${data.Poster}" class="img-fluid mb-3">
                             <div>
                             <table class="table">
                               <thead>
@@ -117,7 +135,7 @@ function getMovieDetails(imdbID) {
                               </tbody>
                             </table>
                                 <ul>
-                                  <!--ToDo-->
+                                  ${data.Ratings.map(rating => `<li>${rating.Source}: ${rating.Value}</li>`).join('')};
                                 </ul>
                             </div>
                         </div>
@@ -135,7 +153,7 @@ function getMovieDetails(imdbID) {
             // Fügen Sie das Modal-Element zum Body hinzu
             document.body.appendChild(modalElement);
             // Holen Sie das Modal-Element
-            const modal = event.target.closest('.modal');
+            const modal = document.getElementById('movieModal')
             // Zeigen Sie das Modal an
             const modalInstance = new bootstrap.Modal(modal);
             modalInstance.show();

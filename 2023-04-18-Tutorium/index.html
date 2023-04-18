@@ -1,0 +1,214 @@
+<!--
+https://kulturbanause.de/blog/einstieg-in-sass-funktionsweise-und-ueberblick/
+https://kulturbanause.de/tag/sass/
+
+https://kulturbanause.de/blog/ausgeschnittener-text-mit-css/
+https://kulturbanause.de/links-quellen/alles-ueber-die-css-eigenschaft-hyphens/
+https://kulturbanause.de/blog/gezeichnete-svg-pfade-mit-css-animieren/
+https://kulturbanause.de/blog/schwebende-objekte-mit-css3-keyframe-animationen/
+
+
+http://2011.beercamp.com/
+https://blog.hubspot.com/website/parallax-scrolling
+https://www.magicpattern.design/tools/css-backgrounds
+
+https://www.mediaevent.de/css/variable.html
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8">
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Site Metas -->
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Beispielseite</title>
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Poppins:400,700|Roboto:400,700&display=swap"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="style/style.css">
+</head>
+
+<body>
+
+<nav class="posFix">
+    <ul class="flex">
+        <li>
+            <a href="#top">Home</a>
+        </li>
+        <li>
+            <a href="#business">Business</a>
+        </li>
+        <li>
+            <a href="#what">What we do</a>
+        </li>
+
+        <li>
+            <a href="#contact">Contact</a>
+        </li>
+    </ul>
+</nav>
+
+<header class="flex" id="top">
+    <h1>My Website</h1>
+    <div>
+        <img class="hovering" src="images/hero.png" alt="header image">
+    </div>
+</header>
+
+<article class="flex flex-end pattern pattern-01" id="business">
+    <div class="gap flex">
+        <h2 class="block center">Our Business</h2>
+        <section class="detail-box">
+            <img src="images/idea.png" alt="fast loading">
+            <h3>
+                Original Ideas
+            </h3>
+            <p>
+                It is a long established fact that a reader will be distracted by the readable content
+            </p>
+        </section>
+        <section class="detail-box">
+            <img src="images/controller.png" alt="fast loading">
+            <h3>
+                Great apps
+            </h3>
+            <p>
+                It is a long established fact that a reader will be distracted by the readable content
+            </p>
+        </section>
+        <section class="detail-box">
+            <img src="images/monitor.png" alt="fast loading">
+            <h3>
+                High Resolution
+            </h3>
+            <p>
+                It is a long established fact that a reader will be distracted by the readable content
+            </p>
+        </section>
+        <section class="detail-box">
+            <img src="images/rocket-ship.png" alt="fast loading">
+            <h3>
+                Fast Loading
+            </h3>
+            <p>
+                It is a long established fact that a reader will be distracted by the readable content
+            </p>
+        </section>
+    </div>
+</article>
+<article class="pattern-02 pattern borderTop" id="what">
+    <h2 class="anchor">
+        What we do
+    </h2>
+    <div class="boxes">
+        <section class="content-box bg-red">
+            <div class="img-box">
+                <img src="images/idea.png" alt=""/>
+            </div>
+            <div class="transform">
+                <h3>
+                    Original Ideas
+                </h3>
+                <p>
+                    It is a long established fact that a reader will be distracted
+                    by the readable content
+                </p>
+            </div>
+        </section>
+
+        <section class="content-box bg-green">
+            <div class="img-box">
+                <img src="images/controller.png" alt=""/>
+            </div>
+            <div class="transform">
+                <h3>
+                    Great apps
+                </h3>
+                <p>
+                    It is a long established fact that a reader will be distracted
+                    by the readable content
+                </p>
+            </div>
+        </section>
+
+        <section class="content-box bg-red">
+            <div class="img-box">
+                <img src="images/monitor.png" alt=""/>
+            </div>
+            <div class="transform">
+                <h3>
+                    High Resolution
+                </h3>
+                <p>
+                    It is a long established fact that a reader will be distracted
+                    by the readable content
+                </p>
+            </div>
+        </section>
+
+        <section class="content-box bg-green">
+            <div class="img-box">
+                <img src="images/rocket-ship.png" alt=""/>
+            </div>
+            <div class="transform">
+                <h3>
+                    Fast Loading
+                </h3>
+                <p>
+                    It is a long established fact that a reader will be distracted
+                    by the readable content
+                </p>
+            </div>
+        </section>
+    </div>
+</article>
+
+<article id="contact" class="pattern pattern-01 borderTop">
+    <h2 class="anchor">Contact Us</h2>
+    <section class="flex">
+        <div class="img-box elem1">
+            <img src="images/contact.jpg" alt="">
+        </div>
+        <form class="elem2" action="#">
+            <div>
+                <input type="text" placeholder="Name"/>
+            </div>
+            <div>
+                <input type="email" placeholder="Email"/>
+            </div>
+            <div>
+                <input type="text" placeholder="Pone Number"/>
+            </div>
+            <div>
+                <input type="text" class="message-box" placeholder="Message"/>
+            </div>
+            <div class="d-flex mt-4 ">
+                <button>
+                    SEND
+                </button>
+            </div>
+        </form>
+    </section>
+</article>
+
+
+<footer class="footer posFix">
+    <p>
+        &copy; All Rights Reserved By us
+    </p>
+</footer>
+<!-- footer section -->
+
+
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drag & Drop</title>
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+<nav>
+    <ul>
+        <li>
+            <a href="../video/index.html">Video</a>
+        </li>
+        <li>
+            <a href="../audio/index.html">Audio</a>
+        </li>
+        <li>
+            <a href="../dragDrop/index.html">Drag & Drop</a>
+        </li>
+        <li>
+            <a href="../geolocation/index.html">Geolocation</a>
+        </li>
+    </ul>
+</nav>
+<main>
+    <!-- Dropzone-Container -->
+    <div class="dropzone">
+        <!-- Bild zum Drag & Drop -->
+        <img src="think.png" alt="HTML5 Logo"
+             id="dragImage" draggable="true">
+    </div>
+
+    <!-- Weitere Dropzone-Container -->
+    <div class="dropzone"></div>
+    <div class="dropzone"></div>
+
+</main>
+
+<script>
+    // Drag-Element auswählen
+    const dragImage = document.querySelector("#dragImage");
+
+    // Dropzone-Container auswählen
+    const dropZones = document.querySelectorAll(".dropzone");
+
+    // Drag-Eventlistener hinzufügen
+    dragImage.addEventListener("dragstart", function (event) {
+        event.dataTransfer.setData("text", event.target.id);
+    });
+
+    // Drop-Eventlistener für alle Dropzone-Container hinzufügen
+    for (let i = 0; i < dropZones.length; i++) {
+        // Drag-Over-Eventlistener hinzufügen, um das Standard-Verhalten zu unterbinden
+        dropZones[i].addEventListener("dragover", function (event) {
+            /*Die Funktion event.preventDefault() wird verwendet, um das Standard-Verhalten
+            eines Events zu unterbinden. Wenn ein bestimmtes Event auf einem Element
+            ausgelöst wird, führt der Browser standardmäßig eine vordefinierte Aktion aus,
+            z.B. das Öffnen eines Links oder das Anzeigen eines Kontextmenüs.
+            Durch das Aufrufen von event.preventDefault() innerhalb des Event-Handlers wird
+            das Standard-Verhalten unterbunden und stattdessen eine benutzerdefinierte Aktion
+            ausgeführt, die im Event-Handler definiert ist.
+            Im Fall von Drag & Drop wird event.preventDefault() häufig verwendet, um das
+            Standard-Verhalten zu unterbinden, wenn das Element in eine Dropzone gezogen wird.
+            Standardmäßig würde der Browser das Element nicht in die Dropzone verschieben,
+            sondern eine neue Seite mit dem Element als Bild öffnen. Durch das Aufrufen von
+            event.preventDefault() wird das Standard-Verhalten unterbunden und stattdessen
+            wird das Element in die Dropzone verschoben.*/
+            event.preventDefault();
+        });
+
+        // Drop-Eventlistener hinzufügen, um das Element zu verschieben
+        dropZones[i].addEventListener("drop", function (event) {
+            event.preventDefault();
+
+            // ID des verschobenen Elements abrufen
+            const data = event.dataTransfer.getData("text");
+
+            // Verschobenes Element an die neue Position verschieben
+            const draggedElement = document.getElementById(data);
+            event.target.appendChild(draggedElement);
+        });
+    }
+</script>
+
+
+</body>
+</html>

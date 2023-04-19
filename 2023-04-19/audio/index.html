@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Audio</title>
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+<nav>
+    <ul>
+        <li>
+            <a href="../video/index.html">Video</a>
+        </li>
+        <li>
+            <a href="../audio/index.html">Audio</a>
+        </li>
+        <li>
+            <a href="../dragDrop/index.html">Drag & Drop</a>
+        </li>
+        <li>
+            <a href="../geolocation/index.html">Geolocation</a>
+        </li>
+    </ul>
+</nav>
+<main class="audio">
+
+    <article class="block border">
+    <h2>Verwendung von Audioeffekten</h2>
+        <audio controls id="audioEffect">
+            <source src="file_example.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </article>
+
+    <article class="block border">
+        <h2>Synchronisation von Audio und Video</h2>
+        <video controls id="myVideo" muted>
+            <source src="../video/sample_960x400_ocean_with_audio.mp4" type="video/mp4">
+            Your browser does not support the video element.
+        </video>
+        <audio controls id="syncAudio">
+            <source src="file_example.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </article>
+
+    <article class="block border">
+        <h2>Verwendung von Audioanalyse</h2>
+        <audio controls id="audioanalyse">
+            <source src="file_example.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <canvas id="myCanvas" width="600" height="300"></canvas>
+    </article>
+
+    <article class="border last">
+        <h2>Generierung von Audio</h2>
+        <button id="generateAudioButton">Audio generieren</button>
+        <button id="stopAudioButton">Audio stoppen</button>
+    </article>
+
+
+</main>
+
+    <script>
+        // Initialisierung des AudioContexts
+        const audioContext = new AudioContext();
+
+        /* Verwendung von Audioeffekten */
+        // Auswählen des Audio-Elements
+        const audioEffect = document.querySelector('#audioEffect');
+        // Erstellen der Audioquelle
+        const source = audioContext.createMediaElementSource(audioEffect);
+        // Erstellen des WaveShaper-Effekts
+        const distortion = audioContext.createWaveShaper();
+        // Erstellen der Kurve für den WaveShaper-Effekt
+        distortion.curve = makeDistortionCurve(400);
+        // Verbindung der Audioquelle mit dem WaveShaper-Effekt
+        source.connect(distortion);
+        // Verbindung des WaveShaper-Effekts mit der Audioausgabe
+        distortion.connect(audioContext.destination);
+
+        // Funktion zum Erstellen der Kurve für den WaveShaper-Effekt
+        function makeDistortionCurve(amount) {
+            // Konstante für die Verzerrungsstärke
+            const k = amount;
+            // Anzahl der Samples
+            const n_samples = 44100;
+            // Array zum Speichern der Kurve
+            const curve = new Float32Array(n_samples);
+            // Konstante für die Umrechnung von Grad in Radian
+            const deg = Math.PI / 180;
+            // Variable zum Speichern des aktuellen Samples
+            let x;
+            // Schleife über alle Samples
+            for (let i = 0; i < n_samples; ++i) {
+                // Berechnung des aktuellen Samples
+                x = (i * 2) / n_samples - 1;
+                // Berechnung des Werts für die Kurve an der aktuellen Sample-Position
+                curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+            }
+            // Rückgabe der fertigen Kurve
+            return curve;
+        }
+
+
+        /* Synchronisation von Audio und Video */
+        // Auswählen des Video-Elements
+        const video = document.querySelector('#myVideo');
+        // Auswählen des Audio-Elements für die Synchronisation
+        const syncAudio = document.querySelector('#syncAudio');
+        // Eventlistener für das Abspielen des Videos
+        video.addEventListener('play', () => {
+            syncAudio.play();
+        });
+        // Eventlistener für das Anhalten des Videos
+        video.addEventListener('pause', () => {
+            syncAudio.pause();
+        });
+        // Eventlistener für das Suchen im Video
+        video.addEventListener('seeking', () => {
+            syncAudio.currentTime = video.currentTime;
+        });
+
+        /* Verwendung von Audioanalyse */
+        // Auswählen des Audio-Elements für die Analyse
+        const audioanalyse = document.querySelector('#audioanalyse');
+        // Auswählen des Canvas-Elements
+        const canvas = document.querySelector('#myCanvas');
+        // Erstellen des 2D-Canvas-Kontexts
+        const canvasContext = canvas.getContext('2d');
+        // Erstellen der Audioquelle für die Analyse
+        const sourceAnalyse = audioContext.createMediaElementSource(audioanalyse);
+        // Erstellen des Analyse-Effekts
+        const analyser = audioContext.createAnalyser();
+        // Einstellen der FFT-Größe
+        analyser.fftSize = 2048;
+        // Verbindung der Audioquelle mit dem Analyse-Effekt
+        sourceAnalyse.connect(analyser);
+        // Verbindung des Analyse-Effekts mit der Audioausgabe
+        analyser.connect(audioContext.destination);
+
+        // Anzahl der Frequenzbänder
+        const bufferLength = analyser.frequencyBinCount;
+        // Erstellen des Array zum Speichern der Daten
+        const dataArray = new Uint8Array(bufferLength);
+
+        // Funktion zum Zeichnen der Frequenzbänder
+        function draw() {
+            // Breite des Canvas-Elements
+            const WIDTH = canvas.width;
+            // Höhe des Canvas-Elements
+            const HEIGHT = canvas.height;
+            // Löschen des Canvas
+            canvasContext.clearRect(0, 0, WIDTH, HEIGHT);
+            // Abrufen der Frequenzdaten
+            analyser.getByteFrequencyData(dataArray);
+            // Einstellen der Hintergrundfarbe
+            canvasContext.fillStyle = 'rgb(0, 0, 0)';
+            // Zeichnen des Hintergrunds
+            canvasContext.fillRect(0, 0, WIDTH, HEIGHT);
+            // Breite der Frequenzbalken
+            const barWidth = (WIDTH / bufferLength) * 2.5;
+            // Höhe des aktuellen Frequenzbalkens
+            let barHeight;
+            // X-Koordinate des aktuellen Frequenzbalkens
+            let x = 0;
+            // Schleife über alle Frequenzbänder
+            for (let i = 0; i < bufferLength; i++) {
+                // Höhe des aktuellen Frequenzbalkens
+                barHeight = dataArray[i];
+                // Farbe des aktuellen Frequenzbalkens
+                canvasContext.fillStyle = `rgb(${barHeight + 100},50,50)`;
+                // Zeichnen des aktuellen Frequenzbalkens
+                canvasContext.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
+                // Erhöhen der X-Koordinate für den nächsten Frequenzbalken
+                x += barWidth + 1;
+            }
+            // Aufruf der Funktion für die nächste Animation
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        /* Generierung von Audio */
+        // Initialisierung des Oszillators
+        let oscillator;
+        // Auswählen des Buttons zum Generieren von Audio
+        const generateAudioButton = document.querySelector('#generateAudioButton');
+        // Auswählen des Buttons zum Stoppen des Audio
+        const stopAudioButton = document.querySelector('#stopAudioButton');
+
+        // Eventlistener für den Generieren-Button
+        generateAudioButton.addEventListener('click', function() {
+            // Erstellen des Oszillators
+            oscillator = audioContext.createOscillator();
+            // Einstellen des Oszillatortyps
+            oscillator.type = 'sine';
+            // Einstellen der Frequenz
+            oscillator.frequency.value = 440;
+            // Verbindung des Oszillators mit der Audioausgabe
+            oscillator.connect(audioContext.destination);
+            // Starten des Oszillators
+            oscillator.start();
+        });
+
+        // Eventlistener für den Stoppen-Button
+        stopAudioButton.addEventListener('click', function() {
+            // Stoppen des Oszillators
+            oscillator.stop();
+        });
+    </script>
+
+</body>
+</html>

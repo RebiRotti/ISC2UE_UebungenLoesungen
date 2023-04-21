@@ -1,0 +1,39 @@
+HTML & CSS Übung
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_1,_HTML_%26_CSS
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_2,_HTML_%26_CSS
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_3,_HTML_%26_CSS
+- https://wiki.streampy.at/index.php?title=Web_-_Kompetenzcheck_HTML_%26_CSS_1
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_4,_HTML_%26_CSS#.C3.9Cbung_4_.E2.80.93_Website%3A_Der_Zoo_und_seine_Bewohner
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_6,_HTML_%26_CSS
+
+Flexbox Übung
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_7,_HTML_%26_CSS_-_Flexbox
+
+Grid Übung
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_8,_HTML_%26_CSS_-_Gridlayout
+
+Responsive Design Übung
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_9,_HTML_%26_CSS_-_Responsive_Design
+
+JavaScript
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_1,_JavaScript
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_3,_JavaScript
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_2,_JavaScript
+- https://scrimba.com/learn/learnjavascript/module-3-final-solo-project-invoice-creator-cVbPpRhD
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_4,_Pangram_Check_Function
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_5,_Isogram_Check_Function#Aufgabe%3A_Implementiere_eine_Isogram_Check_Function
+- https://wiki.streampy.at/index.php?title=Web_-_Kompetenzcheck_JavaScript_1#Schere.2C_Stein.2C_Papier_.E2.9C.82.EF.B8.8F_.F0.9F.97.BF_.F0.9F.A7.BB
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_6,_JavaScript_%26_jQuery
+
+PHP
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_1,_PHP
+- https://wiki.streampy.at/index.php?title=Web_-_%C3%9Cbung_2,_PHP
+
+CSS Frameworks
+- https://wiki.streampy.at/index.php?title=Web_-_Kompetenzcheck_CSS_Framework
+
+
+User Interface & User Experience Design, Web Accessibility, Suchmaschinenoptimierung(SEO), Grundlegende Webdesign Richtlinien 
+- https://wiki.streampy.at/index.php?title=Web_-_Kompetenzcheck_UX/UI/Accessibility/Gestalterische_Grundlagen#Presentation_Time_.F0.9F.98.89
+
+

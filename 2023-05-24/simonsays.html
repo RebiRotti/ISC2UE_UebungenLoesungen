@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simon Says</title>
+    <style>
+        .button {
+            width: 130px;
+            height: 130px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .blue {
+            background-color: blue;
+        }
+
+        .green {
+            background-color: green;
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+
+        .button.active {
+            opacity: 0.5;
+            transform: scale(1.2);
+        }
+
+        #gameBoard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        main {
+            max-width: 960px;
+            margin: 20px auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Simon Says</h1>
+    <p>Pay attention to the sequence and repeat it:</p>
+    <div id="gameBoard">
+        <div class="button red" data-color="red"></div>
+        <div class="button blue" data-color="blue"></div>
+        <div class="button green" data-color="green"></div>
+        <div class="button yellow" data-color="yellow"></div>
+    </div>
+    <p id="message"></p>
+</main>
+<script>
+    let sequence = [];
+    let playerSequence = [];
+    let level = 1;
+    let gameBoard = document.querySelector('#gameBoard');
+    let message = document.querySelector('#message');
+    let buttons = gameBoard.querySelectorAll('.button');
+
+    // Spiel starten
+    startGame();
+
+    // Funktion, um das Spiel zu starten
+    function startGame() {
+        // ToDo Array sequence & playerSequence leeren
+        sequence = [];
+        playerSequence = [];
+        // ToDo level auf 1 setzen
+        level = 1;
+        // ToDo Textausgabe welches Level wird gespielt
+        // Variante 1: message.innerHTML = 'Level ' + level;
+        // variante 2: message.innerText = 'Level ' + level;
+        // Variante 3:
+        message.textContent = 'Level ' + level;
+        //console.log(message)
+        nextRound();
+    }
+
+    // Funktion, um die nächste Runde zu starten
+    function nextRound() {
+        // ToDo Ändern den Textinhalt
+        message.textContent = 'Level ' + level;
+        disableButtons();
+        // ToDo Zufälligen Button zur Sequenz hinzufügen
+        let randomButton = buttons[Math.floor(Math.random() * buttons.length)];
+        sequence.push(randomButton);
+        // ToDo Sequenz anzeigen
+        playSequence();
+    }
+
+    // Funktion, um die Sequenz abzuspielen
+    function playSequence() {
+        // ToDo Hilfsvariable (Zählervariable) mit Startwert 0
+        let i = 0;
+        // ToDo Deklaration von setInterval für das setzen der active Klasse auf den Button der Sequenz
+        let interval = setInterval(function () {
+            if( i >= sequence.length) {
+                // lösche Intervall
+                clearInterval(interval);
+                // Buttons aktivieren für Usereingabe
+                enableButtons();
+            } else {
+                // lokale Variable mit dem Eintrag aus dem Array sequence an der
+                // Stelle i
+                let button = sequence[i];
+                // Von dem Element setzt Klasse active
+                button.classList.add('active');
+                // 1 Sek warten und Klasse active wieder löschen und i um 1 erhöhen
+                setTimeout(function () {
+                    button.classList.remove('active');
+                    i++;
+                }, 1000);
+            }
+        }, 1000);
+    }
+
+    // Diese Funktionen werden verwendet, um die Buttons während des Spielablaufs zu aktivieren oder zu deaktivieren, je nachdem, ob der Spieler an der Reihe ist oder nicht.
+    // Funktion, um einen Button-Klick zu überprüfen
+
+    buttons.forEach((button) => {
+        // ToDo addEventListener on each button
+        button.addEventListener('click', () => {
+            //console.log(button)
+            // speichere data-color value in Variable color
+            let color = button.getAttribute('data-color');
+            // setzt Klasse active auf button
+            button.classList.add('active');
+            // nach 1 Sekunde remove active Klasse von Button
+            setTimeout(function () {
+                button.classList.remove('active');
+            }, 1000);
+            // Speichere color in playerSequence Array
+            playerSequence.push(color);
+            // Überprüfen wir die länge playerSequence mit vorgegeben sequence
+
+            if(playerSequence.length === sequence.length) {
+                if(checkSequence()) {
+                    // Ausgabe Text
+                    message.textContent = 'Correct guess';
+                    // Variable level um 1 erhöhen
+                    level++;
+                    // Spielersequenze zurücksetzen
+                    playerSequence = [];
+                    // nach 1 Sekunde nächste Runde starten
+                    setTimeout(nextRound, 1000);
+                } else {
+                    // Falsch gedrück - Spiel vorbei
+                    message.textContent = 'Wrong guess. Try again';
+                    disableButtons();
+
+                    // Fleißaufgabe: Erstelle einen Button mit einem
+                    // EventListener der die Funktion startGame()
+                    // aufruft
+
+                }
+            }
+        })
+    })
+    // Funktion, um die Spielersequenz mit der Sequenz zu überprüfen
+    function checkSequence() {
+        // ToDo für jeden Eintrag im Array playerSequence
+        for(let i = 0; i < playerSequence.length; i++) {
+            // wenn der String in der PlayerSequence an der Stelle i nicht mit der
+            // 2. Klasse in dem Array sequence an der Stelle i überein stimmt
+            console.log(sequence[i])
+            if(playerSequence[i] !== sequence[i].classList[1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Funktion, um die Buttons zu aktivieren
+    // Die enableButtons()-Funktion iteriert über die Buttons und setzt die CSS-Eigenschaft pointerEvents auf 'auto',
+    // um die Buttons aktiv zu machen. Dadurch werden die Buttons wieder anklickbar.
+    function enableButtons() {
+        // ToDo
+        for(let i = 0; i < buttons.length; i++) {
+            buttons[i].style.pointerEvents = 'auto';
+        }
+    }
+
+    // Funktion, um die Buttons zu deaktivieren
+    // Die disableButtons()-Funktion iteriert ebenfalls über die Buttons, setzt jedoch die CSS-Eigenschaft pointerEvents
+    // auf 'none', um die Buttons zu deaktivieren. Dadurch werden die Buttons nicht mehr anklickbar.
+    function disableButtons() {
+        // ToDo
+        for(let i = 0; i < buttons.length; i++) {
+            buttons[i].style.pointerEvents = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
+

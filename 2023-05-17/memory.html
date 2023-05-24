@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Memory Spiel</title>
+  <style>
+    .card {
+      width: 100px;
+      height: 100px;
+      background-color: #CCC;
+      color: #CCC;
+      display: inline-block;
+      margin: 5px;
+      text-align: center;
+      line-height: 100px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .flipped {
+      background-color: #FFF;
+      color: #000;
+    }
+    .matched {
+      background-color: #00FF00;
+      color: #FFFFFF;
+      cursor: default;
+    }
+    .player {
+      padding-bottom: 20px;
+    }
+    main {
+      max-width: 960px;
+      margin: 20px auto;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <div class="player">
+    <label for="playerName">Spielername:</label>
+    <input type="text" id="playerName">
+    <button class="startGame">Spielen</button>
+  </div>
+  <div id="game-board"></div>
+  <p id="attempts"></p>
+  <div id="localStorageOutput"></div>
+</main>
+
+<script>
+  let playerNameInput = document.querySelector('#playerName');
+  let gameBoard = document.querySelector('#game-board');
+  let flippedCards = [];
+  let attempts = 0;
+  let symbols = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'];
+
+
+  // Funktion, um das Spiel zu starten
+  document.querySelector('.startGame').addEventListener('click', () => {
+    localStorage.clear();
+    attempts = 0;
+    // Spielername im LocalStorage speichern
+    localStorage.setItem('playerName', playerNameInput.value);
+
+    // Spielbrett erstellen
+    createGameBoard();
+
+    // Anzahl der Versuche aktualisieren
+    updateAttempts();
+  });
+
+  // Funktion, um das Spielbrett zu erstellen
+  function createGameBoard() {
+    gameBoard.innerHTML = '';
+    // Array zurück setzen (falls Game noch mal gestartet wird)
+    symbols = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'];
+    // Die Karten mischen
+    symbols = shuffleArray(symbols);
+
+    // Für jedes Symbol eine Karte erstellen und dem Spielbrett hinzufügen
+    symbols.forEach(function(symbol) {
+      let card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = symbol;
+      card.addEventListener('click', flipCard);
+      gameBoard.appendChild(card);
+    });
+  }
+
+  // Funktion, um die Karten zufällig anzuordnen (Fisher-Yates Algorithmus)
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
+  }
+
+  // Funktion, um eine Karte umzudrehen
+  function flipCard() {
+    if (flippedCards.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
+      this.classList.add('flipped');
+      flippedCards.push(this);
+
+      // Wenn zwei Karten umgedreht wurden, prüfen ob sie übereinstimmen
+      if (flippedCards.length === 2) {
+        attempts++;
+        updateAttempts();
+
+        setTimeout(checkMatch, 1000);
+      }
+    }
+  }
+
+  // Funktion, um die Anzahl der Versuche anzuzeigen und im LocalStorage zu speichern
+  function updateAttempts() {
+
+    // Anzahl der Versuche im LocalStorage speichern
+    localStorage.setItem('attempts', attempts);
+
+    let output = localStorage.getItem('playerName') + ' Versuche: ' + localStorage.getItem('attempts');
+    document.querySelector('#localStorageOutput').textContent = output;
+  }
+
+  // Funktion, um zu prüfen, ob die umgedrehten Karten übereinstimmen
+  function checkMatch() {
+    let card1 = flippedCards[0];
+    let card2 = flippedCards[1];
+
+    if (card1.innerHTML === card2.innerHTML) {
+      card1.classList.remove('flipped');
+      card1.classList.add('matched');
+      card2.classList.remove('flipped');
+      card2.classList.add('matched');
+    } else {
+      card1.classList.remove('flipped');
+      card2.classList.remove('flipped');
+    }
+
+    flippedCards = [];
+
+    // Überprüfen, ob alle Karten gematcht wurden
+    let matchedCards = document.querySelector('.matched');
+    if (matchedCards.length === symbols.length) {
+      endGame();
+    }
+  }
+  // Funktion, um das Spiel zu beenden
+  function endGame() {
+    let playerName = localStorage.getItem('playerName');
+    let message = 'Glückwunsch, ' + playerName + '! Du hast das Spiel beendet. Anzahl der Versuche: ' + attempts;
+
+    // Benachrichtigung anzeigen
+    alert(message);
+
+    // Spielbrett leeren und Versuche zurücksetzen
+    gameBoard.innerHTML = '';
+    attempts = 0;
+    updateAttempts();
+
+    // Spielername aus dem LocalStorage entfernen
+    localStorage.clear();
+  }
+
+  if(localStorage.getItem('playerName')) {
+    // Spielbrett erstellen
+    createGameBoard();
+    updateAttempts();
+  }
+
+
+</script>
+</body>
+</html>
+
+<!--
+Dieses Beispielcode erstellt ein einfaches Memory-Spiel. Das Spielbrett wird mit Karten gefüllt, die Symbole enthalten. Wenn der Spieler auf eine Karte klickt, wird sie umgedreht. Wenn zwei Karten umgedreht wurden, wird überprüft, ob sie übereinstimmen. Wenn ja, bleiben sie umged
+Die Funktion checkMatch vergleicht die Symbole der umgedrehten Karten. Wenn die Symbole übereinstimmen, werden die Karten als "gematcht" markiert. Andernfalls werden die Karten wieder umgedreht. Anschließend wird das flippedCards-Array zurückgesetzt.
+
+Die Funktion überprüft auch, ob alle Karten gematcht wurden, indem sie die Anzahl der Karten mit der Anzahl der Symbole vergleicht. Wenn alle Karten gematcht wurden, wird die Funktion endGame aufgerufen (hier noch nicht implementiert), um das Spiel zu beenden.
+
+Diese Funktion ruft das Element mit der ID 'attempts' ab und aktualisiert den Textinhalt, um die Anzahl der Versuche anzuzeigen. Sie verwendet die Variable attempts, um den aktuellen Wert der Versuche darzustellen.
+
+Stelle sicher, dass du ein HTML-Element mit der ID 'attempts' im HTML-Code hast, um die Anzahl der Versuche anzuzeigen. Zum Beispiel kannst du dies vor dem Spielbrett hinzufügen:
+
+Die Funktion endGame holt sich den Spielername aus dem LocalStorage und erstellt eine Benachrichtigung, die dem Spieler gratuliert und die Anzahl der Versuche anzeigt. Anschließend wird das Spielbrett geleert und die Anzahl der Versuche zurückgesetzt. Der Spielername wird auch aus dem LocalStorage entfernt, um Platz für einen neuen Spielernamen zu machen.
+
+Die Benachrichtigung wird mit der alert-Funktion angezeigt. Du kannst diesen Teil anpassen, um die Benachrichtigung auf eine andere Weise darzustellen, wenn gewünscht.
+
+Die Anzahl der Versuche wird nicht direkt im LocalStorage gespeichert. In meinem vorherigen Beispielcode wird die Anzahl der Versuche in der JavaScript-Variablen attempts gespeichert und in der Funktion updateAttempts aktualisiert, um sie im HTML anzuzeigen.
+
+Wenn du die Anzahl der Versuche im LocalStorage speichern möchtest, kannst du den folgenden Code verwenden, um dies zu erreichen:
+
+
+Hier wird nach der Aktualisierung der Anzahl der Versuche im HTML-Element attempts der Wert der Variablen attempts auch im LocalStorage mit dem Schlüssel 'attempts' gespeichert. Dadurch wird die Anzahl der Versuche zwischen verschiedenen Sitzungen beibehalten und kann beim erneuten Laden der Seite wiederhergestellt werden.
+
+Um die Anzahl der Versuche beim Laden der Seite wiederherzustellen, kannst du den folgenden Code in der startGame-Funktion hinzufügen:
+Dieser Code ruft den Wert der Anzahl der Versuche aus dem LocalStorage ab und konvertiert ihn in eine Ganzzahl. Wenn kein Wert im LocalStorage vorhanden ist, wird die Anzahl der Versuche auf 0 gesetzt. Anschließend wird die updateAttempts-Funktion aufgerufen, um die Anzahl der Versuche im HTML anzuzeigen.
+-->

@@ -1,0 +1,50 @@
+:root {
+    --spacePX: 20px;
+    --spaceEM: 2em;
+    --smallSpace: 5px;
+    --buttonbackground: #4caf50;
+    --buttonhover: #a76066;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: var(--spacePX);
+}
+h1 {
+    text-align: center;
+    margin-bottom: var(--spacePX);
+}
+main {
+    max-width: 720px;
+    margin: var(--spaceEM) auto;
+}
+form div:nth-child(2n) {
+    background-color: #b7b7b7;
+}
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: var(--smallSpace);
+}
+.flex > * {
+    flex: 1 1 250px;
+    padding: var(--smallSpace);
+}
+.none {
+    display: none;
+}
+.submitBtn {
+    background-color: var(--buttonbackground);
+    color: #fff;
+    border: none;
+    padding: var(--smallSpace);
+    margin-top: var(--spaceEM);
+    cursor: pointer;
+}
+.submitBtn:hover {
+    background-color: var(--buttonhover);
+}
+
+

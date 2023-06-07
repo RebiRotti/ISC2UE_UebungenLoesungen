@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function greet(name) {
+    if (name === "Alice") {
+      return "Hello, Alice!";
+    } else if (name === "Bob") {
+      return "Hello, Bob!";
+    } else {
+      return "Hello, guest!";
+    }
+  }
+
+  const guest = "Alice";
+  const greeting = greet(guest);
+
+  console.log(greeting); // Hello, Alice!
+
+</script>
+</body>
+</html>

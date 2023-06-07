@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function isPalindrome(word) {
+        const reversed = word.split("").reverse().join("");
+        return word === reversed;
+    }
+
+    const word = "radar";
+    const isPalindrome = isPalindrome(word);  // Variablenname = funktionsname
+
+    console.log("Is Palindrome:", isPalindrome);
+
+
+</script>
+</body>
+</html>

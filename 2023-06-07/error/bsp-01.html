@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function calculateAverage(numbers) {
+        let sum = 0;
+        for (let i = 0; i <= numbers.length; i++) {  // < ohne =
+            console.log('i: ' + i);
+            console.log(numbers);
+            sum += numbers[i];
+        }
+        const average = sum / numbers.length;
+        return average;
+    }
+
+    const scores = [75, 80, 90, 85, 95];
+    const averageScore = calculateAverage(scores);
+
+    console.log("Average score:", averageScore);
+
+
+</script>
+</body>
+</html>

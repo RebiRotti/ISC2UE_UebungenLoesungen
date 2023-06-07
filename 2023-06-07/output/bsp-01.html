@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  function multiply(num1, num2) {
+    const result = num1 * num2;
+    return result;
+  }
+
+  function subtract(num1, num2) {
+    const result = num1 - num2;
+    return result;
+  }
+
+  function calculate(num1, num2) {
+    const multiplicationResult = multiply(num1, num2);
+    const subtractionResult = subtract(num1, num2);
+
+    const finalResult = multiplicationResult + subtractionResult;
+    return finalResult;
+  }
+
+  const number1 = 5;
+  const number2 = 3;
+  const result = calculate(number1, number2);
+
+  console.log(result); // 17
+
+</script>
+</body>
+</html>
